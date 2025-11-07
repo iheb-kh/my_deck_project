@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mappa di Pisa - Traffico e Urbanistica</title>
+
+  <!-- MapLibre & Deck.gl -->
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/deck.gl@8.9.36/dist.min.js"></script>
+  <script src="https://unpkg.com/@deck.gl/mapbox@8.9.36/dist.min.js"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="map.css" />
+</head>
+<body>
+  <div class="map-frame">
+    <div id="map"></div>
+
+    <!-- Left panel -->
+    <div class="panel">
+      <div class="panel-title">Livelli &amp; Filtri</div>
+
+      <div class="row">
+        <label><input type="checkbox" id="chk-buildings" checked> Edifici</label>
+        <label><input type="checkbox" id="chk-roads" checked> Rete stradale</label>
+        <label><input type="checkbox" id="chk-traffic" checked> Traffico</label>
+        <label><input type="checkbox" id="chk-rumore"> Rumore</label>
+      </div>
+
+      <div class="row">
+        <div class="select-wrap">
+          <select id="class-select" class="select" title="Classe veicoli">
+            <option value="all">All vehicles</option>
+            <option value="HW_truck">HW_truck</option>
+            <option value="LMV_passengers">LMV_passengers</option>
+            <option value="MHV_deliver">MHV_deliver</option>
+            <option value="PWA_moped">PWA_moped</option>
+          </select>
+          <i class="fas fa-car"></i>
+        </div>
+
+        <div class="select-wrap">
+          <select id="metric-select" class="select" title="Metrica">
+            <option value="count">Count</option>
+            <option value="speed">Speed</option>
+            <option value="relative" selected>Relative speed</option>
+          </select>
+          <i class="fas fa-gauge"></i>
+        </div>
+      </div>
+
+      <div class="row">
+        <label>
+          <input type="checkbox" id="chk-values">
+          Mostra valore su ogni strada
+        </label>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend-card" id="legend-card">
+      <div class="legend-title">Scala colore (per filtro corrente)</div>
+      <div class="legend-bar"></div>
+      <div class="legend-scale">
+        <span id="legend-min">min</span>
+        <span id="legend-max">max</span>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-card" id="timeline-card">
+      <div class="timeline-top">
+        <div id="time-start" class="time-label">--:--:--</div>
+
+        <div class="player">
+          <button class="circle-btn" id="btn-prev" title="Precedente" disabled>
+            <i class="fas fa-step-backward"></i>
+          </button>
+          <button class="circle-btn primary" id="btn-play" title="Play/Pausa" disabled>
+            <i id="play-icon" class="fas fa-play"></i>
+          </button>
+          <button class="circle-btn" id="btn-next" title="Successivo" disabled>
+            <i class="fas fa-step-forward"></i>
+          </button>
+        </div>
+
+        <div></div>
+      </div>
+
+      <input type="range"
+             id="time-slider"
+             class="timeline-slider"
+             min="0"
+             max="1000"
+             value="0"
+             disabled />
+
+      <div class="timeline-labels">
+        <div id="date-left">--</div>
+        <div id="date-right">--</div>
+      </div>
+
+      <div id="no-data-message" class="no-data-message hidden">
+        Nessun dato fornito
+      </div>
+    </div>
+
+    <!-- Top-right controls -->
+    <div class="map-controls-top">
+      <button class="control-btn" id="btn-zoom-in" title="Zoom In">
+        <i class="fas fa-plus"></i>
+      </button>
+      <button class="control-btn" id="btn-zoom-out" title="Zoom Out">
+        <i class="fas fa-minus"></i>
+      </button>
+      <button class="control-btn" id="btn-satellite" title="Vista Satellite">
+        <i class="fas fa-satellite"></i>
+      </button>
+      <button class="control-btn" id="btn-3d" title="Vista 3D">
+        <i class="fas fa-cube"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="map-tooltip" class="map-tooltip"></div>
+
+  <!-- Local JS -->
+  <script src="map.js"></script>
+</body>
+</html>
