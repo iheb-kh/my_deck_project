@@ -3,6 +3,8 @@ from server.app_config import BASE_DIR
 
 # Import API module so routes are registered
 import server.api_endpoints  # noqa: F401
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 """
 Main entrypoint for the Pisa map app.

@@ -47,8 +47,9 @@ def load_raw_traffic() -> pd.DataFrame:
     df['begin'] = pd.to_datetime(df['begin'], utc=True)
     df['end'] = pd.to_datetime(df['end'], utc=True)
 
-    df['begin_seconds'] = (df['begin'].view('int64') // 1_000_000_000).astype(int)
-    df['end_seconds'] = (df['end'].view('int64') // 1_000_000_000).astype(int)
+    df['begin_seconds'] = (df['begin'].astype('int64') // 1_000_000_000).astype(int)
+    df['end_seconds'] = (df['end'].astype('int64') // 1_000_000_000).astype(int)
+
 
     if 'id' in df.columns:
         df['id'] = df['id'].astype(str)

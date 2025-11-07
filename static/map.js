@@ -676,6 +676,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Play / pause
   btnPlay.addEventListener('click', () => {
     if (!chkTraffic.checked) return;
+console.log('Rendered roads layer data length:', layers);
 
     const icon = document.getElementById('play-icon');
     const isPlaying = icon.classList.contains('fa-pause');
@@ -733,6 +734,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       await fetchJson('/api/map/buildings?limit=100000')
     );
     layers.buildingsLayer.setProps({ data: buildingsFC });
+console.log('Rendered roads layer data length:', layers);
 
     const bounds = getFeatureCollectionBounds(roadsFC);
     if (bounds) {
